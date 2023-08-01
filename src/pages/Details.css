@@ -1,0 +1,10 @@
+.new-chat-button {
+    background-color: #007bff; /* 设置按钮的背景色 */
+    color: #fff; /* 设置文字颜色为白色 */
+    font-size: 16px; /* 设置文字大小 */
+    padding: 10px 20px; /* 设置内边距，增加按钮的大小 */
+    border: none; /* 去除边框 */
+    border-radius: 5px; /* 圆角边框 */
+    cursor: pointer; /* 鼠标悬停时显示手型指针 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加按钮阴影效果 */
+  }

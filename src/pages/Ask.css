@@ -1,0 +1,39 @@
+/* Box container styles */
+.box {
+    position: fixed;
+    
+    width: 100%;
+    padding: 12px;
+    justify-content: center; /* Center the Box and its contents horizontally */
+    align-items: center; /* Center the Box and its contents vertically */ 
+  }  
+  /* Center the content inside the Box container */
+  /* Input box styles */
+  .box input[type="text"] {
+    flex: 1 ;
+    padding: 10px 70px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Send button styles */
+  .box button {
+    padding: 10px 30px;
+    background: #4caf50; /* Green background color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Style the arrow icon inside the send button */
+  .box button::after {
+    content: '\2192'; /* Unicode arrow character */
+    margin-left: 8px;
+  }
+  
+  /* On hover, change the background color of the send button */
+  .box button:hover {
+    background: #45a049; /* Darker green on hover */
+  }
+  
