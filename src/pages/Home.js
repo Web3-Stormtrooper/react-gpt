@@ -1,21 +1,126 @@
 import React, { useEffect, useState } from 'react';
-import Create from './Create';
-import Ask from './Ask';
+import Fingerprint2 from 'fingerprintjs2';
 import DataDetails from './DataDetails';
 import './Ask.css';
 import './Create.css'; // 导入自定义的 CSS 样式
 const Home = () => {
-  const [User_id, setUserid] = useState('1111');
+  const [User_id, setUserid] = useState('');
   const [datalist, setDataList] = useState(null);
   const [Session_id, setSession_id] = useState(null);
   const [dataDetails, setDataDetails] = useState(null);
+
+  const Rename=({ User_id ,itemId})=>{
+    const [showInput_title, setShowInput_title] = useState(false); // 用于控制是否显示输入框
+    const [Title, set_retitle] = useState(''); // 用于保存用户输入的值
+    const handleButtonClick_rename = () => {
+        // 点击按钮时显示输入框
+        setShowInput_title(true);
+      };
+    const handleInputSubmit = () => {
+        // 处理输入框中的值提交的事件
+        // 这里可以发送请求，并根据用户输入的值执行相应的操作
+        // 发送请求的逻辑代码在这里
+        const requestData = {
+          Title: Title,
+          User_id:User_id,
+          Session_id: itemId,
+      };
+      const apiUrl = 'https://chattoday.info/update';
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json', // 设置请求头的 Content-Type 为 application/json
+      },
+        body: JSON.stringify(requestData), // 将 JSON 对象转换为 JSON 字符串
+      })
+        .then((response) => response.json())
+        .then((data) => {
+        // 处理返回的数据
+        if (data && data.Meg === 'success') {
+          handlegetlist();
+          handlegetlist();
+        } else {
+          // Handle the error if needed
+          console.error('Ask API returned an error:', data);
+        }
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+      });
+    
+        // 处理完逻辑后，隐藏输入框
+        setShowInput_title(false);
+        set_retitle('');
+
+      };
+      const handleInputCancel = () => {
+        // 处理取消输入的事件
+        // 在这里可以清空用户输入的值，并隐藏输入框
+        set_retitle('');
+        setShowInput_title(false);
+      };
+      return (
+        <div>
+          {/* 显示按钮 */}
+          {!showInput_title && (
+            <button  onClick={handleButtonClick_rename}>Rename</button>
+          )}
+    
+          {/* 显示输入框 */}
+          {showInput_title && (
+            <div>
+              <input
+                type="text"
+                value={Title}
+                onChange={(e) => set_retitle(e.target.value)}
+                placeholder="Enter value..."
+              />
+              <button onClick={handleInputSubmit}>Send</button>
+              <button onClick={handleInputCancel}>Cancel</button> {/* 添加取消按钮 */}
+            </div>
+          )}
+        </div>
+      );
+      };
+
+
+  const delete_session=(itemId) =>{
+    const requestData = {
+        Session_id: itemId,
+        User_id: User_id,
+      };
+      const apiUrl='https://chattoday.info/delete';
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => response.json())
+      
+      .then((data) => {
+        // 处理返回的数据
+        if (data && data.Meg === 'success') {
+          handlegetlist();
+          handlegetlist();
+        } else {
+          // Handle the error if needed
+          console.error('Ask API returned an error:', data);
+        }
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+      });
+
+};
   const handledetails = (itemId) => {
     const requestData = {
       Session_id: itemId,
       User_id: User_id,
     };
 
-    const apiUrl = 'http://167.172.75.201:8877/detail';
+    const apiUrl = 'https://chattoday.info/detail';
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -38,7 +143,7 @@ const Home = () => {
     User_id: User_id,
   };
 
-  const apiUrl = 'http://167.172.75.201:8877/getlist';
+  const apiUrl = 'https://chattoday.info/getlist';
   fetch(apiUrl, {
     method: 'POST',
     headers: {
@@ -58,6 +163,14 @@ const Home = () => {
   
   
   useEffect(() => {
+    const generateFingerprint = async () => {
+      const components = await Fingerprint2.getPromise();
+      const values = components.map((component) => component.value);
+      const fingerprint = Fingerprint2.x64hash128(values.join(''), 64);
+      setUserid(fingerprint); // 使用状态设置方法设置userid的值
+    };
+
+    generateFingerprint();
     handlegetlist();
   }, [User_id]);
   const Create = ({ User_id }) => {
@@ -77,7 +190,7 @@ const Home = () => {
         Title: Title,
         User_id:User_id,
     };
-    const apiUrl = 'http://167.172.75.201:8877/create';
+    const apiUrl = 'https://chattoday.info/create';
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -88,6 +201,13 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
       // 处理返回的数据
+      if (data && data.Meg === 'success') {
+        handlegetlist();
+        handlegetlist();
+      } else {
+        // Handle the error if needed
+        console.error('Ask API returned an error:', data);
+      }
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -97,8 +217,7 @@ const Home = () => {
       // 处理完逻辑后，隐藏输入框
       setShowInput(false);
       settitle('');
-      handlegetlist();
-      handlegetlist();
+
     };
   
     const handleInputCancel = () => {
@@ -144,7 +263,7 @@ const Home = () => {
         User_id: User_id,
         Session_id: Session_id,
       };
-      const apiUrl = 'http://167.172.75.201:8877/ask';
+      const apiUrl = 'https://chattoday.info/ask';
   
       try {
         const response = await fetch(apiUrl, {
@@ -214,6 +333,8 @@ const Home = () => {
           <button className="new-chat-button" onClick={() => {handledetails(item.Session_id);}}>
             {item.Title}
           </button>
+          <button onClick={() => {delete_session(item.Session_id);}}>Delete</button>
+          <Rename User_id={User_id} itemId={item.Session_id}/>
         </div>
       ))}
     {datalist && datalist.Meg === 'success' && datalist.Data && datalist.Data.length === 0 && (
