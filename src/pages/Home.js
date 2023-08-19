@@ -172,7 +172,7 @@ const Home = () => {
 
     generateFingerprint();
     handlegetlist();
-  }, [User_id]);
+  });
   const Create = ({ User_id }) => {
     const [showInput, setShowInput] = useState(false); // 用于控制是否显示输入框
     const [Title, settitle] = useState(''); // 用于保存用户输入的值
@@ -254,7 +254,7 @@ const Home = () => {
   };
   const Ask = () => {
     const [Question, setQuestion] = useState('');
-    const [responseData, setResponseData] = useState(null);
+    const [ setResponseData] = useState(null);
   
     const handleSubmit = async (event) => {
       event.preventDefault();
