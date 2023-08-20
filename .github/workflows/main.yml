@@ -24,12 +24,3 @@ jobs:
     - name: Build Next.js app
       run: npm run build
 
-    - name: Create folder
-      run: mkdir build/my-folder
-
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.7.1
-      with:
-        branch: gh-pages
-        folder: build # 这里应该设置为你的 Next.js 构建输出文件夹的路径
-        ACCESS_TOKEN: ${{ secrets.REACT_TOKEN }}
