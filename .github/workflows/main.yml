@@ -32,4 +32,4 @@ jobs:
       with:
         branch: gh-pages
         folder: build # 这里应该设置为你的 Next.js 构建输出文件夹的路径
-        token: ${{ secrets.REACT_TOKEN }}
+        ACCESS_TOKEN: ${{ secrets.REACT_TOKEN }}
