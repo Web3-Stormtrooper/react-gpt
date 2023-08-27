@@ -23,4 +23,12 @@ jobs:
 
     - name: Build Next.js app
       run: npm run build
+    - name: Deploy to Server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
 
+        rsync -avz -e "ssh -i ~/.ssh/id_ed25519" ./ root@167.172.75.201:/usr/school/react-app
