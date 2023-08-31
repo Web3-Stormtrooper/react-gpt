@@ -137,7 +137,8 @@ const Home = () => {
       });
   };
   // Fetch initial data list
-  const handlegetlist=()=>{const requestData = {
+  const handlegetlist = useCallback(() => {
+  const requestData = {
     User_id: User_id,
   };
 
@@ -157,9 +158,8 @@ const Home = () => {
     .catch((error) => {
       console.error('Error fetching data:', error);
     });
-  };
-  
-  
+}, [User_id]);
+
   useEffect(() => {
   const generateFingerprint = async () => {
     const components = await Fingerprint2.getPromise();
@@ -170,11 +170,9 @@ const Home = () => {
 
   generateFingerprint();
 
-  // 将 handlegetlist 提取到一个变量中
-  const handleGetListFunction = handlegetlist;
-
-  handleGetListFunction();
+  handlegetlist(); // 使用经过 useCallback 包装的函数
 }, [User_id, handlegetlist]);
+
 
   const Create = ({ User_id }) => {
     const [showInput, setShowInput] = useState(false); // 用于控制是否显示输入框
