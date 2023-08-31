@@ -161,16 +161,21 @@ const Home = () => {
   
   
   useEffect(() => {
-    const generateFingerprint = async () => {
-      const components = await Fingerprint2.getPromise();
-      const values = components.map((component) => component.value);
-      const fingerprint = Fingerprint2.x64hash128(values.join(''), 64);
-      setUserid(fingerprint); // 使用状态设置方法设置userid的值
-    };
+  const generateFingerprint = async () => {
+    const components = await Fingerprint2.getPromise();
+    const values = components.map((component) => component.value);
+    const fingerprint = Fingerprint2.x64hash128(values.join(''), 64);
+    setUserid(fingerprint); // 使用状态设置方法设置userid的值
+  };
 
-    generateFingerprint();
-    handlegetlist();
-  }, [User_id,handlegetlist()]);
+  generateFingerprint();
+
+  // 将 handlegetlist 提取到一个变量中
+  const handleGetListFunction = handlegetlist;
+
+  handleGetListFunction();
+}, [User_id, handlegetlist]);
+
   const Create = ({ User_id }) => {
     const [showInput, setShowInput] = useState(false); // 用于控制是否显示输入框
     const [Title, settitle] = useState(''); // 用于保存用户输入的值
