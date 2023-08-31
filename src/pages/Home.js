@@ -38,7 +38,6 @@ const Home = () => {
         // 处理返回的数据
         if (data && data.Meg === 'success') {
           handlegetlist();
-          handlegetlist();
         } else {
           // Handle the error if needed
           console.error('Ask API returned an error:', data);
@@ -102,7 +101,6 @@ const Home = () => {
       .then((data) => {
         // 处理返回的数据
         if (data && data.Meg === 'success') {
-          handlegetlist();
           handlegetlist();
         } else {
           // Handle the error if needed
@@ -172,7 +170,7 @@ const Home = () => {
 
     generateFingerprint();
     handlegetlist();
-  });
+  }, [User_id]);
   const Create = ({ User_id }) => {
     const [showInput, setShowInput] = useState(false); // 用于控制是否显示输入框
     const [Title, settitle] = useState(''); // 用于保存用户输入的值
@@ -202,7 +200,6 @@ const Home = () => {
       .then((data) => {
       // 处理返回的数据
       if (data && data.Meg === 'success') {
-        handlegetlist();
         handlegetlist();
       } else {
         // Handle the error if needed
@@ -254,7 +251,7 @@ const Home = () => {
   };
   const Ask = () => {
     const [Question, setQuestion] = useState('');
-    const [ setResponseData] = useState(null);
+    const [responseData, setResponseData] = useState(null);
   
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -285,7 +282,6 @@ const Home = () => {
         setResponseData(data);
   
         if (data && data.Meg === 'success') {
-          handledetails(Session_id);
           handledetails(Session_id);
         } else {
           // Handle the error if needed
@@ -323,7 +319,7 @@ const Home = () => {
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
 <div style={{ position: 'fixed', top: 0, left: 0, width: '200px', height: '100%', background: 'gray'}}>
-  <Create User_id={User_id} handlegetlist={handlegetlist}/>
+  <Create User_id={User_id}/>
   <div>
     {/* Display buttons sorted by UpdateTimestamp in descending order */}
     {datalist && datalist.Meg === 'success' && datalist.Data && datalist.Data.length > 0 && datalist.Data
