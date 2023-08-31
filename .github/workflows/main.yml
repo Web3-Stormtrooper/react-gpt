@@ -23,12 +23,15 @@ jobs:
 
     - name: Build Next.js app
       run: npm run build
+    - name: Add host key to known_hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan 167.172.75.201 >> ~/.ssh/known_hosts
+        chmod 644 ~/.ssh/known_hosts
     - name: Deploy to Server
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       run: |
-        mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
-
         rsync -avz -e "ssh -i ~/.ssh/id_ed25519" ./ root@167.172.75.201:/usr/school/react-app
